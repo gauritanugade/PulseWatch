@@ -1,20 +1,36 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
 from apps.common.models import BaseModel
-
 from .managers import UserManager
 
 
-class User(BaseModel, AbstractUser):
-    username = None
+class User(BaseModel, AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(
+        unique=True,
+    )
 
     full_name = models.CharField(
         max_length=255,
     )
 
-    email = models.EmailField(
-        unique=True,
+    ROLE_CHOICES = (
+        ("admin", "Admin"),
+    )
+
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default="admin",
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+    )
+
+    is_staff = models.BooleanField(
+        default=True,
     )
 
     USERNAME_FIELD = "email"

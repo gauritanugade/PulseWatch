@@ -128,3 +128,7 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = "accounts.User"
+
+AUTHENTICATION_BACKENDS = [
+    "apps.accounts.authentication.EmailAuthenticationBackend",
+]
