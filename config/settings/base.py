@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     # Third Party Apps
     "rest_framework",
     "drf_spectacular",
+    "rest_framework_simplejwt.token_blacklist",
+
 
     # Local Apps
     "apps.accounts",
@@ -114,6 +116,9 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+
+    "EXCEPTION_HANDLER": "apps.common.exceptions.custom_exception_handler",
+
 }
 
 SPECTACULAR_SETTINGS = {

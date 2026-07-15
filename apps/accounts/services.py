@@ -23,3 +23,11 @@ def login_user(email, password):
             "full_name": user.full_name,
         },
     }
+
+
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+def logout_user(refresh_token):
+    token = RefreshToken(refresh_token)
+    token.blacklist()

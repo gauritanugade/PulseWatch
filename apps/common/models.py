@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.utils import timezone
 
 
 class BaseModel(models.Model):
@@ -23,5 +24,12 @@ class BaseModel(models.Model):
         blank=True,
     )
 
+    def soft_delete(self):
+        self.deleted_at = timezone.now()
+        self.save(update_fields=["deleted_at"])
+
     class Meta:
         abstract = True
+
+
+
