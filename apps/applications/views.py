@@ -1,10 +1,10 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema,OpenApiParameter,OpenApiTypes
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from apps.common.responses import success_response
-
+from apps.common.pagination import StandardResultsSetPagination
 from .serializers import (
     ApplicationSerializer,
     CreateApplicationSerializer,
@@ -48,17 +48,63 @@ class ApplicationListCreateAPIView(APIView):
 
     @extend_schema(
         summary="Application List",
+        parameters=[
+            OpenApiParameter(
+                name="page",
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                description="Page Number",
+            ),
+            OpenApiParameter(
+                name="page_size",
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                description="Records per page",
+            ),
+            OpenApiParameter(
+                name="search",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description="Search by name or description",
+            ),
+            OpenApiParameter(
+                name="environment",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description="development/testing/staging/production",
+            ),
+            OpenApiParameter(
+                name="is_active",
+                type=OpenApiTypes.BOOL,
+                location=OpenApiParameter.QUERY,
+            ),
+            OpenApiParameter(
+                name="ordering",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description="name, -name, created_at, -created_at",
+            ),
+        ],
         responses=ApplicationSerializer(many=True),
     )
     def get(self, request):
-        applications = list_applications()
+        applications = list_applications(request)
 
-        return success_response(
+        paginator = StandardResultsSetPagination()
+
+        page = paginator.paginate_queryset(
+            applications,
+            request,
+        )
+
+        serializer = ApplicationSerializer(
+            page,
+            many=True,
+        )
+
+        return paginator.get_paginated_response(
+            serializer.data,
             message="Applications fetched successfully.",
-            data=ApplicationSerializer(
-                applications,
-                many=True,
-            ).data,
         )
 
 

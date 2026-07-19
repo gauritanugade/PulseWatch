@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     "apps.alerts",
     "apps.notifications",
     "apps.common",
+    "apps.health_checks",
+
 ]
 
 MIDDLEWARE = [
@@ -118,6 +120,12 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 
     "EXCEPTION_HANDLER": "apps.common.exceptions.custom_exception_handler",
+    
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ],
 
 }
 
