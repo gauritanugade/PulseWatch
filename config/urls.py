@@ -60,4 +60,15 @@ urlpatterns = [
     "api/v1/applications/",
     include("apps.applications.urls"),
 ),
+
+path(
+        "",
+        include("apps.common.urls"),
+    ),
+
+path(
+    "api/v1/dashboard/",
+    include("apps.dashboard.urls"),
+),
+
 ]
