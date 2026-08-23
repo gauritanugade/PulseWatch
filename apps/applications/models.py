@@ -21,6 +21,11 @@ class Application(BaseModel):
         null=True,
     )
 
+    monitoring_url = models.URLField(
+    max_length=500,
+    help_text="URL to monitor for health checks",
+    )
+
     environment = models.CharField(
         max_length=20,
         choices=Environment.choices,

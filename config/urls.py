@@ -67,8 +67,14 @@ path(
     ),
 
 path(
-    "api/v1/dashboard/",
-    include("apps.dashboard.urls"),
-),
+        "api/v1/dashboard/",
+        include("apps.dashboard.urls"),
+    ),
+
+path(
+        "api/v1/health-checks/",
+        include("apps.health_checks.urls"),
+    ),
+
 
 ]
